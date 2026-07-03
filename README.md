@@ -120,4 +120,4 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 - [x] `portpilot unreserve <port>`
 - [x] `watch`
 - [x] Desktop notification when `watch` detects a change
-- [ ] GitHub Actions release pipeline
+- [x] GitHub Actions release pipeline

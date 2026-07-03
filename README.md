@@ -42,6 +42,7 @@ PORT     PID     PROCESS              STATUS
 - Remove a port reservation when the label is no longer useful.
 - Show reserved ports alongside live scan results.
 - Watch a port and print when it becomes free or occupied.
+- Send a desktop notification when a watched port changes state.
 
 ## Project Structure
 
@@ -118,5 +119,5 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 - [x] `reserved`
 - [x] `portpilot unreserve <port>`
 - [x] `watch`
-- [ ] Desktop notification when `watch` detects a change
+- [x] Desktop notification when `watch` detects a change
 - [ ] GitHub Actions release pipeline

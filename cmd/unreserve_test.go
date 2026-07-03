@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/gordenarcher/portpilot/internal/store"
+	"github.com/GordenArcher/portpilot/internal/store"
 )
 
 func TestUnreserveCommandRemovesReservation(t *testing.T) {

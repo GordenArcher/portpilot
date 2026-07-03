@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/gordenarcher/portpilot/internal/ports"
+	"github.com/GordenArcher/portpilot/internal/ports"
 	"github.com/spf13/cobra"
 )
 

@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gordenarcher/portpilot/internal/notify"
-	"github.com/gordenarcher/portpilot/internal/ports"
+	"github.com/GordenArcher/portpilot/internal/notify"
+	"github.com/GordenArcher/portpilot/internal/ports"
 	"github.com/spf13/cobra"
 )
 

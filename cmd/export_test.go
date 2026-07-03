@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	reportjson "github.com/gordenarcher/portpilot/internal/export"
-	"github.com/gordenarcher/portpilot/internal/ports"
+	reportjson "github.com/GordenArcher/portpilot/internal/export"
+	"github.com/GordenArcher/portpilot/internal/ports"
 )
 
 func TestRunExportWritesJSONToStdoutWithoutStatusText(t *testing.T) {

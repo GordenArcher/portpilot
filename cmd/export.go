@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
-	reportjson "github.com/gordenarcher/portpilot/internal/export"
-	"github.com/gordenarcher/portpilot/internal/ports"
-	"github.com/gordenarcher/portpilot/internal/store"
+	reportjson "github.com/GordenArcher/portpilot/internal/export"
+	"github.com/GordenArcher/portpilot/internal/ports"
+	"github.com/GordenArcher/portpilot/internal/store"
 	"github.com/spf13/cobra"
 )
 

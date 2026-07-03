@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/gordenarcher/portpilot/internal/store"
+	"github.com/GordenArcher/portpilot/internal/store"
 	"github.com/spf13/cobra"
 )
 

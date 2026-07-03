@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/gordenarcher/portpilot/internal/ports"
-	"github.com/gordenarcher/portpilot/internal/store"
-	"github.com/gordenarcher/portpilot/internal/ui"
+	"github.com/GordenArcher/portpilot/internal/ports"
+	"github.com/GordenArcher/portpilot/internal/store"
+	"github.com/GordenArcher/portpilot/internal/ui"
 	"github.com/spf13/cobra"
 )
 

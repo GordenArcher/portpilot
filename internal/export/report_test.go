@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gordenarcher/portpilot/internal/ports"
+	"github.com/GordenArcher/portpilot/internal/ports"
 )
 
 func TestNewReportSortsRecordsAndSummarizesReservations(t *testing.T) {

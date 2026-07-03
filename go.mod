@@ -1,4 +1,4 @@
-module github.com/gordenarcher/portpilot
+module github.com/GordenArcher/portpilot
 
 go 1.22
 

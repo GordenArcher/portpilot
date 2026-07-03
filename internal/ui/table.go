@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GordenArcher/portpilot/internal/ports"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/lipgloss/table"
-	"github.com/gordenarcher/portpilot/internal/ports"
 )
 
 const (

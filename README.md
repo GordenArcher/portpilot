@@ -86,10 +86,39 @@ portpilot/
 
 | OS | Scan | Kill | Info | Watch |
 | --- | --- | --- | --- | --- |
-| macOS | `lsof -iTCP -sTCP:LISTEN -n -P` | `lsof -ti :<port>` plus `kill -9` | `lsof -iTCP :<port> -n -P` | `net.DialTimeout` |
+| macOS | `lsof -iTCP -sTCP:LISTEN -n -P` | `lsof -ti :<port>` plus `kill -9` | `lsof -iTCP:<port> -sTCP:LISTEN -n -P` | `net.DialTimeout` |
 | Linux | `ss -tlnp` | `ss` plus `kill -9` | `ss -tlnp sport = :<port>` | `net.DialTimeout` |
 
 ## Build And Install
+
+Install the latest tagged release with Go:
+
+```bash
+go install github.com/GordenArcher/portpilot@latest
+```
+
+Install a specific release:
+
+```bash
+go install github.com/GordenArcher/portpilot@v0.1.0
+```
+
+Download prebuilt binaries from the GitHub release:
+
+```text
+https://github.com/GordenArcher/portpilot/releases/tag/v0.1.0
+```
+
+Available release assets:
+
+```text
+portpilot-darwin-amd64
+portpilot-darwin-arm64
+portpilot-linux-amd64
+portpilot-linux-arm64
+```
+
+Build locally from source:
 
 ```bash
 go run main.go scan

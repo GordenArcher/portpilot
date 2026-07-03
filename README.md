@@ -100,13 +100,13 @@ go install github.com/GordenArcher/portpilot@latest
 Install a specific release:
 
 ```bash
-go install github.com/GordenArcher/portpilot@v0.1.0
+go install github.com/GordenArcher/portpilot@v0.1.1
 ```
 
 Download prebuilt binaries from the GitHub release:
 
 ```text
-https://github.com/GordenArcher/portpilot/releases/tag/v0.1.0
+https://github.com/GordenArcher/portpilot/releases/tag/v0.1.1
 ```
 
 Available release assets:

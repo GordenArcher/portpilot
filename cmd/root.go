@@ -27,6 +27,7 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 	rootCmd.AddCommand(killCmd)
 	rootCmd.AddCommand(infoCmd)
+	rootCmd.AddCommand(exportCmd)
 	rootCmd.AddCommand(reserveCmd)
 	rootCmd.AddCommand(reservedCmd)
 	rootCmd.AddCommand(unreserveCmd)

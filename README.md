@@ -12,6 +12,8 @@ portpilot scan --filter 3000-9000
 portpilot kill 3000
 portpilot kill 3000 --force
 portpilot info 8080
+portpilot export
+portpilot export --filter 3000-9000
 portpilot reserve 8080 "axon-core"
 portpilot reserved
 portpilot unreserve 8080
@@ -33,6 +35,7 @@ PORT     PID     PROCESS              STATUS
 - Scan all occupied TCP listening ports.
 - Filter scans to a port range with `--filter 3000-9000`.
 - Show detailed process information for one port.
+- Export scan results and reservations as JSON.
 - Kill the process listening on a port, with confirmation by default.
 - Skip kill confirmation with `--force` for scripts.
 - Reserve a port label such as `axon-core`.
@@ -49,6 +52,7 @@ portpilot/
 │   ├── scan.go          # portpilot scan
 │   ├── kill.go          # portpilot kill
 │   ├── info.go          # portpilot info
+│   ├── export.go        # portpilot export
 │   ├── reserve.go       # portpilot reserve
 │   ├── reserved.go      # portpilot reserved
 │   ├── unreserve.go     # portpilot unreserve
@@ -109,10 +113,10 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 - [x] `kill`
 - [x] `kill --force`
 - [x] `info`
+- [x] `portpilot export`
 - [x] `reserve`
 - [x] `reserved`
 - [x] `portpilot unreserve <port>`
 - [x] `watch`
-- [ ] `portpilot export`
 - [ ] Desktop notification when `watch` detects a change
 - [ ] GitHub Actions release pipeline

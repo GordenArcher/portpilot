@@ -37,3 +37,55 @@ func TestReleaseWorkflowCoversPlannedReleaseContract(t *testing.T) {
 		}
 	}
 }
+
+func TestCIWorkflowRunsTestsOnNormalPushes(t *testing.T) {
+	data, err := os.ReadFile(".github/workflows/ci.yml")
+	if err != nil {
+		t.Fatalf("read ci workflow: %v", err)
+	}
+
+	workflow := string(data)
+	requiredSnippets := []string{
+		`push:`,
+		`branches:`,
+		`main`,
+		`pull_request:`,
+		`contents: read`,
+		`actions/checkout@v4`,
+		`actions/setup-go@v5`,
+		`go-version: "1.22.x"`,
+		`go test ./...`,
+		`golangci/golangci-lint-action@v6`,
+		`version: v2.12.2`,
+	}
+
+	for _, snippet := range requiredSnippets {
+		if !strings.Contains(workflow, snippet) {
+			t.Fatalf("ci workflow missing required snippet %q\n%s", snippet, workflow)
+		}
+	}
+}
+
+func TestGolangCILintConfigEnforcesFunlenAndNolintlint(t *testing.T) {
+	data, err := os.ReadFile(".golangci.yaml")
+	if err != nil {
+		t.Fatalf("read golangci config: %v", err)
+	}
+
+	config := string(data)
+	requiredSnippets := []string{
+		`funlen`,
+		`nolintlint`,
+		`lines: 80`,
+		`statements: 45`,
+		`require-explanation: true`,
+		`require-specific: true`,
+		`allow-unused: false`,
+	}
+
+	for _, snippet := range requiredSnippets {
+		if !strings.Contains(config, snippet) {
+			t.Fatalf("golangci config missing required snippet %q\n%s", snippet, config)
+		}
+	}
+}

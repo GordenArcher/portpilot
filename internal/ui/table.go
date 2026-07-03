@@ -38,7 +38,6 @@ var (
 	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#E5E7EB"))
 	borderStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#3B82F6"))
 	portStyle   = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#93C5FD"))
-	valueStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("#D1D5DB"))
 
 	occupiedStyle = lipgloss.NewStyle().
 			Bold(true).

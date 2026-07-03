@@ -30,7 +30,9 @@ var killCmd = &cobra.Command{
 			// The force flag skips this prompt for scripting and automation use cases.
 			fmt.Printf("Kill process on port %d? [y/N] ", port)
 			var confirm string
-			fmt.Scanln(&confirm)
+			if _, err := fmt.Scanln(&confirm); err != nil {
+				return fmt.Errorf("failed to read confirmation: %w", err)
+			}
 			if confirm != "y" && confirm != "Y" {
 				fmt.Println("Aborted.")
 				return nil

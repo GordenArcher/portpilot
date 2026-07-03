@@ -1,0 +1,32 @@
+version: "2"
+linters:
+  enable:
+    - funlen
+    - nolintlint
+  settings:
+    funlen:
+      lines: 80
+      statements: 45
+      ignore-comments: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-unused: false
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

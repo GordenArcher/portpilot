@@ -55,8 +55,9 @@ func TestCIWorkflowRunsTestsOnNormalPushes(t *testing.T) {
 		`actions/setup-go@v5`,
 		`go-version: "1.22.x"`,
 		`go test ./...`,
-		`golangci/golangci-lint-action@v6`,
+		`golangci/golangci-lint-action@v8`,
 		`version: v2.12.2`,
+		`args: ./...`,
 	}
 
 	for _, snippet := range requiredSnippets {

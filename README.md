@@ -14,6 +14,7 @@ portpilot kill 3000 --force
 portpilot info 8080
 portpilot reserve 8080 "axon-core"
 portpilot reserved
+portpilot unreserve 8080
 portpilot watch 3000
 ```
 
@@ -35,6 +36,7 @@ PORT     PID     PROCESS              STATUS
 - Kill the process listening on a port, with confirmation by default.
 - Skip kill confirmation with `--force` for scripts.
 - Reserve a port label such as `axon-core`.
+- Remove a port reservation when the label is no longer useful.
 - Show reserved ports alongside live scan results.
 - Watch a port and print when it becomes free or occupied.
 
@@ -49,6 +51,7 @@ portpilot/
 │   ├── info.go          # portpilot info
 │   ├── reserve.go       # portpilot reserve
 │   ├── reserved.go      # portpilot reserved
+│   ├── unreserve.go     # portpilot unreserve
 │   └── watch.go         # portpilot watch
 ├── internal/
 │   ├── ports/
@@ -108,8 +111,8 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 - [x] `info`
 - [x] `reserve`
 - [x] `reserved`
+- [x] `portpilot unreserve <port>`
 - [x] `watch`
-- [ ] `portpilot unreserve <port>`
 - [ ] `portpilot export`
 - [ ] Desktop notification when `watch` detects a change
 - [ ] GitHub Actions release pipeline

@@ -29,5 +29,6 @@ func init() {
 	rootCmd.AddCommand(infoCmd)
 	rootCmd.AddCommand(reserveCmd)
 	rootCmd.AddCommand(reservedCmd)
+	rootCmd.AddCommand(unreserveCmd)
 	rootCmd.AddCommand(watchCmd)
 }

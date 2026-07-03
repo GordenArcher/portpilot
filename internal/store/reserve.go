@@ -9,6 +9,8 @@ import (
 	"strconv"
 )
 
+var ErrReservationNotFound = errors.New("reservation not found")
+
 const (
 	configDirName      = ".portpilot"
 	reservationsFile   = "reservations.json"
@@ -69,6 +71,28 @@ func SaveReservation(port int, label string) error {
 
 	reservations[port] = label
 	return SaveReservations(reservations)
+}
+
+// DeleteReservation removes one saved port label without disturbing the rest
+// of the reservation file.
+//
+// I return ErrReservationNotFound instead of treating a missing key as success
+// because the CLI should be honest with the user. If they try to unreserve the
+// wrong port, silently rewriting the file would hide that mistake and make it
+// harder to understand why future scans still show another reserved port.
+func DeleteReservation(port int) (string, error) {
+	reservations, err := LoadReservations()
+	if err != nil {
+		return "", err
+	}
+
+	label, ok := reservations[port]
+	if !ok {
+		return "", ErrReservationNotFound
+	}
+
+	delete(reservations, port)
+	return label, SaveReservations(reservations)
 }
 
 // SaveReservations writes the full reservation map to disk as stable JSON.

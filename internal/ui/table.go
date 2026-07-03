@@ -158,6 +158,28 @@ func RenderDetail(d *ports.PortDetail) {
 	)
 }
 
+// RenderFreePort shows a successful info result for ports with no listener.
+// An unused port is not a command failure. It is often exactly the answer the
+// user needs when debugging whether a service can bind safely.
+func RenderFreePort(port int) {
+	renderDashboard(
+		"Port Detail",
+		fmt.Sprintf("No listener found on port %d", port),
+		[]metric{
+			{Label: "PORT", Value: fmt.Sprintf("%d", port), Tone: "neutral"},
+			{Label: "STATE", Value: "FREE", Tone: "free"},
+			{Label: "PID", Value: "none", Tone: "neutral"},
+		},
+		[]string{"FIELD", "VALUE"},
+		[][]string{
+			{"PORT", portStyle.Render(fmt.Sprintf("%d", port))},
+			{"STATE", statusPill("FREE", "")},
+			{"PID", dimStyle.Render("none")},
+			{"PROCESS", dimStyle.Render("none")},
+		},
+	)
+}
+
 // RenderReservations prints all reserved ports as a table.
 func RenderReservations(reservations map[int]string) {
 	// Sort by port number for deterministic output.

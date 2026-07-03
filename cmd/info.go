@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -25,10 +26,15 @@ var infoCmd = &cobra.Command{
 		}
 
 		var detail *ports.PortDetail
+		portIsFree := false
 		err = ui.WithLoading(fmt.Sprintf("Inspecting port %d", port), func() error {
 			var err error
 			detail, err = ports.Info(port)
 			if err != nil {
+				if errors.Is(err, ports.ErrPortNotFound) {
+					portIsFree = true
+					return nil
+				}
 				return fmt.Errorf("failed to get info for port %d: %w", port, err)
 			}
 
@@ -36,6 +42,10 @@ var infoCmd = &cobra.Command{
 		})
 		if err != nil {
 			return err
+		}
+		if portIsFree {
+			ui.RenderFreePort(port)
+			return nil
 		}
 
 		ui.RenderDetail(detail)

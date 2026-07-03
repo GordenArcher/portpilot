@@ -1,6 +1,7 @@
 package ports
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"os/exec"
@@ -10,6 +11,8 @@ import (
 	"strings"
 	"time"
 )
+
+var ErrPortNotFound = errors.New("port not found")
 
 const (
 	minPort = 1
@@ -125,6 +128,7 @@ func scanLinux(low, high int) ([]PortInfo, error) {
 // node    12345 user   23u  IPv4 0x...  0t0  TCP *:3000 (LISTEN)
 func parseLsofOutput(raw string, low, high int) ([]PortInfo, error) {
 	var results []PortInfo
+	seen := map[string]bool{}
 	portRe := regexp.MustCompile(`:(\d+) \(LISTEN\)`)
 
 	for _, line := range strings.Split(raw, "\n") {
@@ -153,6 +157,12 @@ func parseLsofOutput(raw string, low, high int) ([]PortInfo, error) {
 			continue
 		}
 
+		key := fmt.Sprintf("%d:%d", port, pid)
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+
 		results = append(results, PortInfo{
 			Port:    port,
 			PID:     pid,
@@ -169,6 +179,7 @@ func parseLsofOutput(raw string, low, high int) ([]PortInfo, error) {
 // LISTEN 0 128 0.0.0.0:8080 0.0.0.0:* users:(("axon core",pid=9876,fd=7))
 func parseSsOutput(raw string, low, high int) ([]PortInfo, error) {
 	var results []PortInfo
+	seen := map[string]bool{}
 	portRe := regexp.MustCompile(`:(\d+)\s`)
 	pidRe := regexp.MustCompile(`pid=(\d+)`)
 	procRe := regexp.MustCompile(`\(\("([^"]+)"`)
@@ -202,6 +213,12 @@ func parseSsOutput(raw string, low, high int) ([]PortInfo, error) {
 			process = m[1]
 		}
 
+		key := fmt.Sprintf("%d:%d", port, pid)
+		if seen[key] {
+			continue
+		}
+		seen[key] = true
+
 		results = append(results, PortInfo{
 			Port:    port,
 			PID:     pid,
@@ -214,14 +231,17 @@ func parseSsOutput(raw string, low, high int) ([]PortInfo, error) {
 }
 
 func infoDarwin(port int) (*PortDetail, error) {
-	out, err := exec.Command("lsof", "-iTCP", fmt.Sprintf(":%d", port), "-n", "-P").Output()
+	out, err := exec.Command("lsof", fmt.Sprintf("-iTCP:%d", port), "-sTCP:LISTEN", "-n", "-P").Output()
 	if err != nil {
+		if isExitStatusOne(err) {
+			return nil, ErrPortNotFound
+		}
 		return nil, fmt.Errorf("lsof failed: %w", err)
 	}
 
 	lines := strings.Split(strings.TrimSpace(string(out)), "\n")
 	if len(lines) < 2 {
-		return nil, fmt.Errorf("nothing found on port %d", port)
+		return nil, ErrPortNotFound
 	}
 
 	// First line is the header, second is the actual entry.
@@ -251,7 +271,7 @@ func infoLinux(port int) (*PortDetail, error) {
 
 	results, err := parseSsOutput(string(out), 0, 65535)
 	if err != nil || len(results) == 0 {
-		return nil, fmt.Errorf("nothing found on port %d", port)
+		return nil, ErrPortNotFound
 	}
 
 	return &PortDetail{
@@ -323,4 +343,9 @@ func validatePort(port int) error {
 	}
 
 	return nil
+}
+
+func isExitStatusOne(err error) bool {
+	var exitErr *exec.ExitError
+	return errors.As(err, &exitErr) && exitErr.ExitCode() == 1
 }

@@ -12,6 +12,8 @@ var rootCmd = &cobra.Command{
 	Short: "portpilot gives developers port visibility and control",
 	Long: `portpilot lets you scan, kill, reserve, and watch ports on your machine.
 Use it to stop fighting "port already in use" errors and know exactly what's running where.`,
+	SilenceUsage:  true,
+	SilenceErrors: true,
 }
 
 func Execute() {

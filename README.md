@@ -32,17 +32,17 @@ PORT     PID     PROCESS              STATUS
 
 ## Features
 
-- Scan all occupied TCP listening ports.
-- Filter scans to a port range with `--filter 3000-9000`.
-- Show detailed process information for one port.
-- Export scan results and reservations as JSON.
-- Kill the process listening on a port, with confirmation by default.
-- Skip kill confirmation with `--force` for scripts.
-- Reserve a port label such as `axon-core`.
-- Remove a port reservation when the label is no longer useful.
-- Show reserved ports alongside live scan results.
-- Watch a port and print when it becomes free or occupied.
-- Send a desktop notification when a watched port changes state.
+-   Scan all occupied TCP listening ports.
+-   Filter scans to a port range with `--filter 3000-9000`.
+-   Show detailed process information for one port.
+-   Export scan results and reservations as JSON.
+-   Kill the process listening on a port, with confirmation by default.
+-   Skip kill confirmation with `--force` for scripts.
+-   Reserve a port label such as `axon-core`.
+-   Remove a port reservation when the label is no longer useful.
+-   Show reserved ports alongside live scan results.
+-   Watch a port and print when it becomes free or occupied.
+-   Send a desktop notification when a watched port changes state.
 
 ## Project Structure
 
@@ -73,21 +73,21 @@ portpilot/
 
 ## Tech Stack
 
-| Concern | Package or tool |
-| --- | --- |
-| CLI framework | `cobra` |
-| Terminal styling | `lipgloss` |
-| Port scanning on macOS | `lsof` through `os/exec` |
-| Port scanning on Linux | `ss` through `os/exec` |
+| Concern                  | Package or tool                          |
+| ------------------------ | ---------------------------------------- |
+| CLI framework            | `cobra`                                  |
+| Terminal styling         | `lipgloss`                               |
+| Port scanning on macOS   | `lsof` through `os/exec`                 |
+| Port scanning on Linux   | `ss` through `os/exec`                   |
 | Reservations persistence | JSON at `~/.portpilot/reservations.json` |
-| Watch polling | `net.DialTimeout` plus polling |
+| Watch polling            | `net.DialTimeout` plus polling           |
 
 ## Platform Support
 
-| OS | Scan | Kill | Info | Watch |
-| --- | --- | --- | --- | --- |
+| OS    | Scan                            | Kill                              | Info                                   | Watch             |
+| ----- | ------------------------------- | --------------------------------- | -------------------------------------- | ----------------- |
 | macOS | `lsof -iTCP -sTCP:LISTEN -n -P` | `lsof -ti :<port>` plus `kill -9` | `lsof -iTCP:<port> -sTCP:LISTEN -n -P` | `net.DialTimeout` |
-| Linux | `ss -tlnp` | `ss` plus `kill -9` | `ss -tlnp sport = :<port>` | `net.DialTimeout` |
+| Linux | `ss -tlnp`                      | `ss` plus `kill -9`               | `ss -tlnp sport = :<port>`             | `net.DialTimeout` |
 
 ## Build And Install
 
@@ -138,15 +138,29 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 
 ## Roadmap
 
-- [x] `scan`
-- [x] `scan --filter`
-- [x] `kill`
-- [x] `kill --force`
-- [x] `info`
-- [x] `portpilot export`
-- [x] `reserve`
-- [x] `reserved`
-- [x] `portpilot unreserve <port>`
-- [x] `watch`
-- [x] Desktop notification when `watch` detects a change
-- [x] GitHub Actions release pipeline
+### v1 Shipped
+
+-   [x] `scan` to list listening ports
+-   [x] `scan --filter` to scan a port range
+-   [x] `kill` to kill by port with confirmation
+-   [x] `kill --force` to skip confirmation
+-   [x] `info` to show detailed port info
+-   [x] `reserve` to label a port
+-   [x] `reserved` to list reservations
+-   [x] `unreserve <port>` to remove a reservation
+-   [x] `export` to write scan results as JSON
+-   [x] `watch` to poll for status changes
+-   [x] Desktop notification when `watch` detects a change
+-   [x] GitHub Actions release pipeline for cross-platform binaries on tag push
+
+### v2 Next
+
+-   [ ] `scan --json` to output JSON for scripts and `jq`
+-   [ ] `scan --watch` to show a live auto-refreshing scan table
+-   [ ] `kill --all --filter <range>` to kill everything in a port range at once
+
+### v3 OSS Polish
+
+-   [ ] README demo GIF via asciinema or vhs
+-   [ ] Homebrew tap for `brew install portpilot`
+-   [ ] `CONTRIBUTING.md`

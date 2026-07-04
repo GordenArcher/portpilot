@@ -100,6 +100,22 @@ func Kill(port int) error {
 	}
 }
 
+// KillPID terminates a process directly by PID after the command layer has
+// already decided that PID is safe to target.
+//
+// Bulk kill works from scan results, not from a single port lookup. If one
+// process owns multiple ports in the filtered range, the command deduplicates
+// that process first and then calls this function once. Keeping direct PID
+// killing here gives the command layer a small, testable primitive while still
+// centralizing OS process control in the ports package.
+func KillPID(pid int) error {
+	if pid <= 0 {
+		return fmt.Errorf("invalid PID %d", pid)
+	}
+
+	return exec.Command("kill", "-9", strconv.Itoa(pid)).Run()
+}
+
 // scanDarwin uses lsof to list listening ports on macOS.
 func scanDarwin(low, high int) ([]PortInfo, error) {
 	// These lsof arguments list only listening TCP ports, skip hostname lookup,

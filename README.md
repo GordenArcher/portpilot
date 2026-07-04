@@ -13,6 +13,7 @@ portpilot scan --json
 portpilot scan --watch
 portpilot kill 3000
 portpilot kill 3000 --force
+portpilot kill --all --filter 3000-9000 --force
 portpilot info 8080
 portpilot export
 portpilot export --filter 3000-9000
@@ -42,6 +43,7 @@ PORT     PID     PROCESS              STATUS
 -   Export scan results and reservations as JSON.
 -   Kill the process listening on a port, with confirmation by default.
 -   Skip kill confirmation with `--force` for scripts.
+-   Kill every process in a scanned port range with `kill --all --filter <range>`.
 -   Reserve a port label such as `axon-core`.
 -   Remove a port reservation when the label is no longer useful.
 -   Show reserved ports alongside live scan results.
@@ -161,7 +163,7 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 
 -   [x] `scan --json` to output JSON for scripts and `jq`
 -   [x] `scan --watch` to show a live auto-refreshing scan table
--   [ ] `kill --all --filter <range>` to kill everything in a port range at once
+-   [x] `kill --all --filter <range>` to kill everything in a port range at once
 
 ### v3 OSS Polish
 

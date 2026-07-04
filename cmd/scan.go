@@ -99,6 +99,10 @@ func runScan(
 	return nil
 }
 
+// runScanJSON is intentionally separate from the styled scan path because JSON
+// output is usually consumed by scripts, jq, or CI. Any spinner, dashboard
+// border, or warning text on stdout would corrupt the stream and make the flag
+// unreliable for automation.
 func runScanJSON(
 	output io.Writer,
 	filter string,
@@ -120,6 +124,10 @@ func runScanJSON(
 	return reportjson.WriteJSON(output, report)
 }
 
+// runScanWatch keeps re-rendering the normal scan dashboard until the context
+// is canceled. The command passes a signal-aware context so Ctrl+C exits the
+// loop cleanly, while tests can pass a manually canceled context and verify the
+// refresh behavior without sleeping forever.
 func runScanWatch(
 	ctx context.Context,
 	output io.Writer,
@@ -149,6 +157,11 @@ func runScanWatch(
 	}
 }
 
+// renderScanWatchFrame performs one complete refresh cycle.
+//
+// Reservation load failures stay non-fatal here for the same reason they are
+// non-fatal in the regular table scan: live port visibility is still useful
+// even when the user's metadata file is temporarily missing or corrupt.
 func renderScanWatchFrame(
 	output io.Writer,
 	filter string,

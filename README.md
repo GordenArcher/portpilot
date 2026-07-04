@@ -10,6 +10,7 @@ It is meant to make "port already in use" problems obvious: scan what is listeni
 portpilot scan
 portpilot scan --filter 3000-9000
 portpilot scan --json
+portpilot scan --watch
 portpilot kill 3000
 portpilot kill 3000 --force
 portpilot info 8080
@@ -36,6 +37,7 @@ PORT     PID     PROCESS              STATUS
 -   Scan all occupied TCP listening ports.
 -   Filter scans to a port range with `--filter 3000-9000`.
 -   Print scan results as JSON with `scan --json`.
+-   Auto-refresh scan results with `scan --watch`.
 -   Show detailed process information for one port.
 -   Export scan results and reservations as JSON.
 -   Kill the process listening on a port, with confirmation by default.
@@ -158,7 +160,7 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 ### v2 Next
 
 -   [x] `scan --json` to output JSON for scripts and `jq`
--   [ ] `scan --watch` to show a live auto-refreshing scan table
+-   [x] `scan --watch` to show a live auto-refreshing scan table
 -   [ ] `kill --all --filter <range>` to kill everything in a port range at once
 
 ### v3 OSS Polish

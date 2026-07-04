@@ -124,6 +124,13 @@ portpilot-linux-amd64
 portpilot-linux-arm64
 ```
 
+Install from a Homebrew tap:
+
+```bash
+brew tap GordenArcher/portpilot https://github.com/GordenArcher/portpilot
+brew install portpilot
+```
+
 Build locally from source:
 
 ```bash
@@ -168,5 +175,5 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 ### v3 OSS Polish
 
 -   [ ] README demo GIF via asciinema or vhs
--   [ ] Homebrew tap for `brew install portpilot`
+-   [x] Homebrew tap for `brew install portpilot`
 -   [ ] `CONTRIBUTING.md`

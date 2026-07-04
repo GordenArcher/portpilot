@@ -176,4 +176,4 @@ The reservation file is metadata only. Reserving a port does not bind it or prev
 
 -   [ ] README demo GIF via asciinema or vhs
 -   [x] Homebrew tap for `brew install portpilot`
--   [ ] `CONTRIBUTING.md`
+-   [x] `CONTRIBUTING.md`

@@ -297,13 +297,34 @@ func infoLinux(port int) (*PortDetail, error) {
 }
 
 func killDarwin(port int) error {
-	out, err := exec.Command("lsof", "-ti", fmt.Sprintf(":%d", port)).Output()
-	if err != nil || strings.TrimSpace(string(out)) == "" {
-		return fmt.Errorf("no process found on port %d", port)
+	// I ask lsof for TCP listeners on this exact port because a plain
+	// ":<port>" lookup also returns client processes that are merely connected
+	// to the server. Killing those clients is surprising, and passing multiple
+	// newline separated PIDs as one kill argument is what caused macOS kill to
+	// fail with exit status 2.
+	out, err := exec.Command("lsof", fmt.Sprintf("-tiTCP:%d", port), "-sTCP:LISTEN", "-n", "-P").Output()
+	if err != nil {
+		if isExitStatusOne(err) {
+			return ErrPortNotFound
+		}
+		return fmt.Errorf("lsof failed: %w", err)
 	}
 
-	pid := strings.TrimSpace(string(out))
-	return exec.Command("kill", "-9", pid).Run()
+	pids, err := parsePIDLines(string(out))
+	if err != nil {
+		return err
+	}
+	if len(pids) == 0 {
+		return ErrPortNotFound
+	}
+
+	for _, pid := range pids {
+		if err := KillPID(pid); err != nil {
+			return fmt.Errorf("kill PID %d: %w", pid, err)
+		}
+	}
+
+	return nil
 }
 
 func killLinux(port int) error {
@@ -359,6 +380,27 @@ func validatePort(port int) error {
 	}
 
 	return nil
+}
+
+func parsePIDLines(raw string) ([]int, error) {
+	// lsof prints one PID per line when more than one matching listener exists.
+	// Parsing each line keeps process termination intentional and prevents the
+	// caller from accidentally treating the full output as a single PID string.
+	var pids []int
+	for _, line := range strings.Split(raw, "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
+		pid, err := strconv.Atoi(line)
+		if err != nil {
+			return nil, fmt.Errorf("parse PID %q: %w", line, err)
+		}
+		pids = append(pids, pid)
+	}
+
+	return pids, nil
 }
 
 func isExitStatusOne(err error) bool {

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"sort"
@@ -51,6 +52,9 @@ var killCmd = &cobra.Command{
 		}
 
 		if err := ports.Kill(port); err != nil {
+			if errors.Is(err, ports.ErrPortNotFound) {
+				return fmt.Errorf("no process found on port %d", port)
+			}
 			return fmt.Errorf("failed to kill process on port %d: %w", port, err)
 		}
 
